@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        primary_highlight: "var(--primary-highlight)",
+        black_highlight: "var(--black-highlight)",
+        primary_black_highlight: "var(--primary-black-highlight)",
       },
     },
   },
