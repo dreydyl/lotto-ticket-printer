@@ -13,10 +13,12 @@ const config: Config = {
         foreground: "var(--foreground)",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        pink: "var(--pink)",
+        blue: "var(--blue)",
         primary_highlight: "var(--primary-highlight)",
         black_highlight: "var(--black-highlight)",
         primary_black_highlight: "var(--primary-black-highlight)",
-      },
+      }
     },
   },
   plugins: [],

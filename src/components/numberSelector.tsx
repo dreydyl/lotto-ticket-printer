@@ -27,7 +27,7 @@ export default function NumberSelector(props: any) {
                         })}
                     />
                 </div>
-                <div className="w-20">
+                <div className="w-[68px]">
                     <NumberInput value={state} onChange={setState}
                         min={min}
                         max={max}></NumberInput>
