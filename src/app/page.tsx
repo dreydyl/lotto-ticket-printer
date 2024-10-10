@@ -1,7 +1,7 @@
 'use client'
 
 import Chart from "@/components/chart";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from 'next/image';
 import { Button, NumberInput, Slider } from "@mantine/core";
 import { combinations } from "@/functions/math";
@@ -12,6 +12,7 @@ import NumberSelector from "@/components/numberSelector";
 import SlipNumber from "@/components/slipNumber";
 import SlipGrid from "@/components/slipGrid";
 import SelectionEditor from "@/components/selectionEditor";
+import useOnScreen from "@/hooks/useOnScreen";
 
 const dollar = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -19,6 +20,11 @@ const dollar = new Intl.NumberFormat('en-US', {
 });
 
 export default function Home() {
+  const sectionRef1 = useRef<HTMLDivElement>(null);
+  const isSectionOnScreen1 = useOnScreen(sectionRef1);
+
+  const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(true);
+
   const [numWhites, setNumWhites] = useState<string | number>(7);
   const [numReds, setNumReds] = useState<string | number>(2);
 
@@ -37,12 +43,17 @@ export default function Home() {
   const slips = Math.ceil(tickets / 5);
   const costToPlay = tickets * 2;
 
+  const trueWhiteSelection = whiteSelection.filter(n => n).slice(0, numWhites as number);
+  const trueRedSelection = redSelection.filter(n => n).slice(0, numReds as number);
+
+  const readyToGenerate = trueWhiteSelection.length === numWhites && trueRedSelection.length === numReds;
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-10 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-24 row-start-2 items-center place-self-stretch sm:items-start">
+    <div className="items-center justify-items-center min-h-screen p-20 pb-20 gap-16 md:py-48 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-24 md:gap-48 row-start-2 items-center place-self-stretch sm:items-start">
 
         {/* Section 1 */}
-        <div className="flex flex-row gap-12 place-content-center place-self-stretch flex-wrap">
+        <div className="flex flex-row gap-12 place-content-center place-self-stretch flex-wrap" ref={sectionRef1}>
           <div className="flex">
             <Chart />
           </div>
@@ -97,6 +108,12 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Section 1 Header */}
+        <div className={"flex flex-row fixed z-10 top-0 left-0 w-full bg-white border-b-[1px] border-black border-solid transition-all h-0 "+((!isSectionOnScreen1 && isSectionHeaderOpen1) ? "md:h-[100px]" : "")}>
+
+        </div>
+        <div className={"fixed z-[11] top-[-32px] right-4 bg-primary w-8 h-8 transition-all "+(!isSectionOnScreen1 ? "translate-y-[48px]" : "")} onClick={() => setIsSectionHeaderOpen1(!isSectionHeaderOpen1)}></div>
+
         {/* Section 2 */}
         <div className="flex flex-row-reverse place-self-stretch place-content-evenly flex-wrap gap-y-8">
 
@@ -136,6 +153,37 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <div className="flex flex-col place-self-center gap-2">
+          <p className="font-bold text-center">Current Selection</p>
+          <div className="flex flex-row gap-[4px] flex-wrap place-self-center place-items-center">
+            <p>White Numbers:</p>
+            {trueWhiteSelection.sort((a, b) => a! - b!).map(num =>
+              <div className="rounded-full w-[40px] h-[40px] bg-white border-black border-[1px] place-content-center" key={'white-num-' + num}>
+                <p className="text-center">{num}</p>
+              </div>)}
+            <p className="pl-4">{trueWhiteSelection.length}/{numWhites}</p>
+          </div>
+          <div className="flex flex-row gap-[4px] flex-wrap place-self-center place-items-center">
+            <p>Red numbers:</p>
+            {trueRedSelection.sort((a, b) => a! - b!).map(num =>
+              <div className="rounded-full w-[40px] h-[40px] bg-primary border-primary border-[1px] place-content-center" key={'red-num-' + num}>
+                <p className="text-center text-white">{num}</p>
+              </div>)}
+            <p className="pl-4">{trueRedSelection.length}/{numReds}</p>
+          </div>
+
+          <div className="flex flex-col place-self-center place-items-center">
+            <Button
+              variant="outline"
+              color="rgba(54, 54, 54, 1)"
+              size="lg"
+              disabled={!readyToGenerate}
+              onClick={() => { }}>Generate Ticket Slips</Button>
+            {!readyToGenerate && <p className="text-primary">Select more numbers or reduce your selection size!</p>}
+          </div>
+        </div>
+
       </main>
     </div>
   );

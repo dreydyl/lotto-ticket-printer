@@ -16,6 +16,7 @@ export default function SelectionEditor(props: any) {
      * @param newNumber 
      */
     const setNumber = (index: number, newNumber: number) => {
+        console.log(newNumber);
         const newArray = [...selection].slice(0, maxOptions);
         if (newNumber > max) {
             for (var n:number = max; n >= 1; n--) {
@@ -24,7 +25,7 @@ export default function SelectionEditor(props: any) {
                     break;
                 }
             }
-        } else if (newNumber < 1) {
+        } else if ((newNumber === 1 && (newArray[index] === undefined || newArray[index] === '')) || newNumber < 1) {
             for (var n = 1; n < max; n++) {
                 if (!newArray.includes(n)) {
                     newArray[index] = n;
