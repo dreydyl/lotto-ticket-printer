@@ -21,6 +21,7 @@ Slip.displayName = 'Slip';
 export default Slip;
 
 interface CalibrationSlipProps {
+    hack?: boolean
 }
 
 const CalibrationSlip = React.forwardRef<HTMLDivElement>((props: CalibrationSlipProps, ref) => {
