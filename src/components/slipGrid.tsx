@@ -25,8 +25,8 @@ export default function SlipGrid(props: any) {
             newArray[newArray.findIndex(n => n === newNumber)] = null;
         } else if (newArray.filter((n: any) => n).length === maxOptions) {
             // console.log('array full');
-            var minIndex = 0;
-            for (var k in newArray) {
+            let minIndex = 0;
+            for (let k in newArray) {
                 const i = parseInt(k);
                 if (newArray[i] && newArray[i]! < newArray[minIndex]!) {
                     minIndex = i;

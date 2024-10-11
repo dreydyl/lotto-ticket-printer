@@ -19,14 +19,14 @@ export default function SelectionEditor(props: any) {
         console.log(newNumber);
         const newArray = [...selection].slice(0, maxOptions);
         if (newNumber > max) {
-            for (var n:number = max; n >= 1; n--) {
+            for (let n:number = max; n >= 1; n--) {
                 if (!newArray.includes(n)) {
                     newArray[index] = n;
                     break;
                 }
             }
         } else if ((newNumber === 1 && (newArray[index] === undefined || newArray[index] === '')) || newNumber < 1) {
-            for (var n = 1; n < max; n++) {
+            for (let n = 1; n < max; n++) {
                 if (!newArray.includes(n)) {
                     newArray[index] = n;
                     break;
@@ -36,7 +36,7 @@ export default function SelectionEditor(props: any) {
             if(newArray[index]) {
                 console.log('HERE');
                 if(newNumber > newArray[index]) {
-                    var n = newNumber+1;
+                    let n = newNumber+1;
                     for (; n < max; n++) {
                         console.log(n);
                         if (!newArray.includes(n)) {
@@ -48,7 +48,7 @@ export default function SelectionEditor(props: any) {
                     //     newArray[index] = '';
                     // }
                 } else if(newNumber < newArray[index]) {
-                    var n = newNumber-1;
+                    let n = newNumber-1;
                     for (; n >= 1; n--) {
                         if (!newArray.includes(n)) {
                             newArray[index] = n;

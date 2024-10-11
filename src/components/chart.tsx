@@ -1,9 +1,9 @@
 import { combinations } from "@/functions/math";
 
 export default function Chart() {
-    var cs = [];
-    for (var i = 2; i < 7; i++) {
-      for (var j = 7; j < 12; j++) {
+    let cs = [];
+    for (let i = 2; i < 7; i++) {
+      for (let j = 7; j < 12; j++) {
         cs.push(combinations(j, 5)! * i);
       }
     }
