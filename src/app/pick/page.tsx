@@ -19,11 +19,18 @@ const dollar = new Intl.NumberFormat('en-US', {
   currency: 'USD'
 });
 
+// Returns a Promise that resolves after "ms" Milliseconds
+const timer = (ms: number | undefined) => new Promise(res => setTimeout(res, ms));
+
+async function increment(period: number) {
+  await timer(period);
+}
+
 export default function Home() {
   const sectionRef1 = useRef<HTMLDivElement>(null);
   const isSectionOnScreen1 = useOnScreen(sectionRef1);
 
-  const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(true);
+  const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(false);
 
   const [numWhites, setNumWhites] = useState<string | number>(7);
   const [numReds, setNumReds] = useState<string | number>(2);
@@ -32,6 +39,15 @@ export default function Home() {
   const [redSelection, setRedSelection] = useState<(number | null)[]>([]);
 
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
+
+  const [currentCombination, setCurrentCombination] = useState<number[]>([-1, -1, -1, -1, -1, -1]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsSectionHeaderOpen1(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   /**
    * Calculate number of tickets and number of slips
@@ -47,6 +63,48 @@ export default function Home() {
   const trueRedSelection = redSelection.filter(n => n).slice(0, numReds as number);
 
   const readyToGenerate = trueWhiteSelection.length === numWhites && trueRedSelection.length === numReds;
+
+  /**
+   * generate all combinations
+   * for each new combinations, set the active numbers to true
+   * @returns combinations
+   */
+  const animateCombinations = async (): Promise<number[][]> => {
+    const combinations: number[][] = [];
+
+    let incTime = Math.floor((1 / (tickets * tickets * tickets)) * 4000);
+
+    for (let f = 0; f < (numReds as number); f++) {
+      let a = 0;
+
+      while (a < (numWhites as number - 4)) {
+        let b = a + 1;
+        while (b < (numWhites as number - 3)) {
+          let c = b + 1;
+          while (c < (numWhites as number - 2)) {
+            let d = c + 1;
+            while (d < (numWhites as number - 1)) {
+              let e = d + 1;
+              while (e < (numWhites as number)) {
+                combinations.push([a, b, c, d, e, f]);
+                if(tickets < 1000) {
+                  setCurrentCombination([a, b, c, d, e, f]);
+                  await increment(incTime*(f+1)*(f+1));
+                }
+                e++;
+              }
+              d++;
+            }
+            c++;
+          }
+          b++;
+        }
+        a++;
+      }
+    }
+
+    return combinations;
+  }
 
   return (
     <div className="items-center justify-items-center min-h-screen p-20 pb-20 gap-16 md:py-48 font-[family-name:var(--font-geist-sans)]">
@@ -109,10 +167,10 @@ export default function Home() {
         </div>
 
         {/* Section 1 Header */}
-        <div className={"flex flex-row fixed z-10 top-0 left-0 w-full bg-white border-b-[1px] border-black border-solid transition-all h-0 "+((!isSectionOnScreen1 && isSectionHeaderOpen1) ? "md:h-[100px]" : "")}>
+        <div className={"flex flex-row fixed z-10 top-[-100px] left-0 w-full bg-white border-b-[1px] border-black border-solid transition-all h-[100px] " + ((!isSectionOnScreen1 && isSectionHeaderOpen1) ? "md:translate-y-[100px]" : "")}>
 
         </div>
-        <div className={"fixed z-[11] top-[-32px] right-4 bg-primary w-8 h-8 transition-all "+(!isSectionOnScreen1 ? "translate-y-[48px]" : "")} onClick={() => setIsSectionHeaderOpen1(!isSectionHeaderOpen1)}></div>
+        <div className={"fixed z-[11] top-[-32px] right-4 bg-primary w-8 h-8 transition-all " + (!isSectionOnScreen1 ? "translate-y-[48px]" : "")} onClick={() => setIsSectionHeaderOpen1(!isSectionHeaderOpen1)}></div>
 
         {/* Section 2 */}
         <div className="flex flex-row-reverse place-self-stretch place-content-evenly flex-wrap gap-y-8">
@@ -158,18 +216,22 @@ export default function Home() {
           <p className="font-bold text-center">Current Selection</p>
           <div className="flex flex-row gap-[4px] flex-wrap place-self-center place-items-center">
             <p>White Numbers:</p>
-            {trueWhiteSelection.sort((a, b) => a! - b!).map(num =>
-              <div className="rounded-full w-[40px] h-[40px] bg-white border-black border-[1px] place-content-center" key={'white-num-' + num}>
+            {trueWhiteSelection.sort((a, b) => a! - b!).map((num, i) => {
+              const highlight = currentCombination.slice(0,5).includes(i);
+              return <div className={"rounded-full w-[40px] h-[40px] bg-white place-content-center "+(highlight ? "border-ticket border-4" : "border-black border-[1px]")} key={'white-num-' + num}>
                 <p className="text-center">{num}</p>
-              </div>)}
+              </div>
+            })}
             <p className="pl-4">{trueWhiteSelection.length}/{numWhites}</p>
           </div>
           <div className="flex flex-row gap-[4px] flex-wrap place-self-center place-items-center">
             <p>Red numbers:</p>
-            {trueRedSelection.sort((a, b) => a! - b!).map(num =>
-              <div className="rounded-full w-[40px] h-[40px] bg-primary border-primary border-[1px] place-content-center" key={'red-num-' + num}>
+            {trueRedSelection.sort((a, b) => a! - b!).map((num, i) => {
+              const highlight = currentCombination[5] === i;
+              return <div className={"rounded-full w-[40px] h-[40px] bg-primary place-content-center "+(highlight ? "border-ticket border-4" : "border-primary border-[1px]")} key={'red-num-' + num}>
                 <p className="text-center text-white">{num}</p>
-              </div>)}
+              </div>
+            })}
             <p className="pl-4">{trueRedSelection.length}/{numReds}</p>
           </div>
 
@@ -179,7 +241,7 @@ export default function Home() {
               color="rgba(54, 54, 54, 1)"
               size="lg"
               disabled={!readyToGenerate}
-              onClick={() => { }}>Generate Ticket Slips</Button>
+              onClick={() => { animateCombinations() }}>Generate Ticket Slips</Button>
             {!readyToGenerate && <p className="text-primary">Select more numbers or reduce your selection size!</p>}
           </div>
         </div>

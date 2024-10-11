@@ -15,6 +15,7 @@ const config: Config = {
         secondary: "var(--secondary)",
         pink: "var(--pink)",
         blue: "var(--blue)",
+        ticket: "var(--yellow)",
         primary_highlight: "var(--primary-highlight)",
         black_highlight: "var(--black-highlight)",
         primary_black_highlight: "var(--primary-black-highlight)",
