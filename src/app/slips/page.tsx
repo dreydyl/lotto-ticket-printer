@@ -3,10 +3,11 @@
 import Slip, { CalibrationSlip } from "@/components/slip";
 import { combinations } from "@/functions/math";
 import { generateURL } from "@/functions/url";
-import { Button } from "@mantine/core";
+import { Alert, Button } from "@mantine/core";
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 
 const dollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -25,6 +26,18 @@ const dollar = new Intl.NumberFormat('en-US', {
 export default function SlipPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const contentRef = useRef<HTMLDivElement>(null);
+    const reactToPrintFn = useReactToPrint({ contentRef });
+
+    const [newAlert, setNewAlert] = useState('');
+
+    useEffect(() => {
+        if (newAlert === '') return;
+        const timer = setTimeout(() => {
+            setNewAlert('');
+        }, 10000);
+        return () => clearTimeout(timer);
+    }, [newAlert])
 
     const whiteNumbers = searchParams.get('whites')?.split(',').map(n => parseInt(n));
     const redNumbers = searchParams.get('reds')?.split(',').map(n => parseInt(n));
@@ -83,6 +96,18 @@ export default function SlipPage() {
 
     return (
         <div className="flex flex-col items-center justify-start min-h-screen">
+
+            {/* Alerts */}
+            {newAlert === '' ? <></> :
+                <div className="fixed z-20 top-0 left-0 w-full h-full flex items-center justify-center" onClick={() => {
+                    setNewAlert('');
+                }}>
+                    <Alert variant="white" color="rgba(245, 179, 73, 1)" title="Invalid Action" withCloseButton>
+                        {newAlert}
+                    </Alert>
+                </div>
+            }
+
             {/* Header */}
             {page ?
                 <div className="sticky top-0 z-10 grid grid-cols-3 w-full h-[120px] bg-white border-b-2 border-black">
@@ -130,36 +155,46 @@ export default function SlipPage() {
             {/* Slip */}
             {page ?
                 <div className="flex items-center justify-center h-[431px] p-8">
-                    <Slip combinations={combos.slice(currentTicket - 1, currentTicket + 4)} />
+                    <Slip combinations={combos.slice(currentTicket - 1, currentTicket + 4)} ref={contentRef} />
                 </div> :
                 <div className="flex items-center justify-center h-[431px] p-8">
-                    <CalibrationSlip />
+                    <CalibrationSlip ref={contentRef} />
                 </div>
             }
             {/* Print */}
             {page ?
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center"
+                    onClick={() => {
+                        setNewAlert('This functionality is not available yet. Please check back in December 2024.');
+                    }}
+                >
                     <Button
                         variant="outline"
                         size="lg"
                         color="rgba(250, 77, 88, 1)"
                         className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
                         onClick={() => {
-
+                            // reactToPrintFn();
                         }}
+                    // disabled
                     >
                         Print Ticket Slip
                     </Button>
                 </div> :
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center"
+                    onClick={() => {
+                        setNewAlert('This functionality is not available yet. Please check back in December 2024.');
+                    }}
+                >
                     <Button
                         variant="outline"
                         size="lg"
                         color="rgba(250, 77, 88, 1)"
                         className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
                         onClick={() => {
-
+                            // reactToPrintFn();
                         }}
+                    // disabled
                     >
                         Print Test Slip
                     </Button>

@@ -180,10 +180,10 @@ export default function Home() {
         </div>
 
         {/* Section 1 Header */}
-        <div className={"flex flex-row fixed z-10 top-[-100px] left-0 w-full bg-white border-b-[1px] border-black border-solid transition-all h-[100px] " + ((!isSectionOnScreen1 && isSectionHeaderOpen1) ? "md:translate-y-[100px]" : "")}>
+        {/* <div className={"flex flex-row fixed z-10 top-[-100px] left-0 w-full bg-white border-b-[1px] border-black border-solid transition-all h-[100px] " + ((!isSectionOnScreen1 && isSectionHeaderOpen1) ? "md:translate-y-[100px]" : "")}>
 
         </div>
-        <div className={"fixed z-[11] top-[-32px] right-4 bg-primary w-8 h-8 transition-all " + (!isSectionOnScreen1 ? "translate-y-[48px]" : "")} onClick={() => setIsSectionHeaderOpen1(!isSectionHeaderOpen1)}></div>
+        <div className={"fixed z-[11] top-[-32px] right-4 bg-primary w-8 h-8 transition-all " + (!isSectionOnScreen1 ? "translate-y-[48px]" : "")} onClick={() => setIsSectionHeaderOpen1(!isSectionHeaderOpen1)}></div> */}
 
         {/* Section 2 */}
         <div className="flex flex-row-reverse place-self-stretch place-content-evenly flex-wrap gap-y-8">
