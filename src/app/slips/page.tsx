@@ -97,16 +97,18 @@ export default function SlipPage() {
                                 Re-pick Numbers
                             </Button>
                         </Link>
-                        <Link href={"slips" + generateURL(whiteNumbers, redNumbers)}>
-                            <Button
-                                variant="outline"
-                                size="md"
-                                color="rgba(250, 77, 88, 1)"
-                                className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
-                            >
-                                Calibrate Printer
-                            </Button>
-                        </Link>
+                        <Button
+                            variant="outline"
+                            size="md"
+                            color="rgba(250, 77, 88, 1)"
+                            className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
+                            onClick={() => {
+                                // @ts-expect-error 'shallow' does not exist in type 'NavigateOptions'
+                                router.push('slips' + generateURL(whiteNumbers, redNumbers), { shallow: true });
+                            }}
+                        >
+                            Calibrate Printer
+                        </Button>
                     </div>
                     <div className="flex items-center justify-center">
                         <div className="flex flex-col items-center justify-center">
@@ -204,7 +206,18 @@ export default function SlipPage() {
                     </div>
                 </div> :
                 <div className="grid grid-cols-3 w-full p-8">
-                    <div className="flex items-center justify-center"></div>
+                    <div className="flex items-center justify-center">
+                        <Link href={"pick" + generateURL(whiteNumbers, redNumbers)}>
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                color="rgba(0, 0, 0, 1)"
+                                className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
+                            >
+                                Re-pick Numbers
+                            </Button>
+                        </Link>
+                    </div>
                     <div className="flex items-center justify-center">
                         <div className="flex flex-col items-center justify-center">
                             <p>Powerball slips required:</p>
@@ -213,16 +226,16 @@ export default function SlipPage() {
                     </div>
                     <div className="flex items-center justify-center">
                         <Button
-                            variant="outline"
+                            variant="filled"
                             size="lg"
-                            color="rgba(0, 0, 0, 1)"
+                            color="rgba(250, 77, 88, 1)"
                             className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
                             onClick={() => {
                                 // @ts-expect-error 'shallow' does not exist in type 'NavigateOptions'
                                 router.push('slips' + generateURL(whiteNumbers, redNumbers) + '&page=1', { shallow: true });
                             }}
                         >
-                            See Slips
+                            Start Drawing {" >"}
                         </Button>
                     </div>
                 </div>
