@@ -1,6 +1,15 @@
 import SlipGrid from "./slipGrid";
 
-export function SelectionTicket(props: any) {
+interface SelectionTicketProps {
+    numWhites: string | number;
+    whiteSelection: (number | null)[];
+    setWhiteSelection: any;
+    numReds: string | number;
+    redSelection: (number | null)[];
+    setRedSelection: any;
+}
+
+export function SelectionTicket(props: SelectionTicketProps) {
     const { numWhites, whiteSelection, setWhiteSelection, numReds, redSelection, setRedSelection } = props;
     return (
         <div className="flex px-4">
@@ -26,7 +35,12 @@ export function SelectionTicket(props: any) {
     )
 }
 
-export function DisplayTicket(props: any) {
+interface DisplayTicketProps {
+    whiteNumbers: string | number[];
+    redNumbers: string | number[];
+}
+
+export function DisplayTicket(props: DisplayTicketProps) {
     const { whiteNumbers, redNumbers } = props;
     console.log(whiteNumbers, redNumbers);
     return (

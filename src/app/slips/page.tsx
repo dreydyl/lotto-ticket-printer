@@ -7,7 +7,7 @@ import { Alert, Button } from "@mantine/core";
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from "react";
-import { useReactToPrint } from "react-to-print";
+// import { useReactToPrint } from "react-to-print";
 
 const dollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -27,7 +27,7 @@ export default function SlipPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const contentRef = useRef<HTMLDivElement>(null);
-    const reactToPrintFn = useReactToPrint({ contentRef });
+    // const reactToPrintFn = useReactToPrint({ contentRef });
 
     const [newAlert, setNewAlert] = useState('');
 
@@ -212,7 +212,8 @@ export default function SlipPage() {
                                 color="rgba(0, 0, 0, 1)"
                                 className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
                                 onClick={() => {
-                                    router.push('slips' + generateURL(whiteNumbers, redNumbers) + '&page=' + (parseInt(page) - 1), { shallow: true } as any);
+                                    // @ts-expect-error 'shallow' does not exist in type 'NavigateOptions'
+                                    router.push('slips' + generateURL(whiteNumbers, redNumbers) + '&page=' + (parseInt(page) - 1), { shallow: true });
                                 }}
                             >
                                 Previous Slip

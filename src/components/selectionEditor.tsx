@@ -1,6 +1,14 @@
 import { NumberInput } from "@mantine/core";
 
-export default function SelectionEditor(props: any) {
+interface SelectionProps {
+    name: string;
+    max: number;
+    maxOptions: string | number;
+    selection: any;
+    setSelection: any;
+}
+
+export default function SelectionEditor(props: SelectionProps) {
     const { name, max, maxOptions, selection, setSelection } = props;
 
     /**
@@ -17,7 +25,7 @@ export default function SelectionEditor(props: any) {
      */
     const setNumber = (index: number, newNumber: number) => {
         console.log(newNumber);
-        const newArray = [...selection].slice(0, maxOptions);
+        const newArray = [...selection].slice(0, maxOptions as number);
         if (newNumber > max) {
             for (let n:number = max; n >= 1; n--) {
                 if (!newArray.includes(n)) {

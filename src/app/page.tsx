@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from "@mantine/core";
-import Image from 'next/image';
 // import PowerballLogo from '../assets/PowerballLogo.svg';
 import Link from 'next/link';
 
@@ -20,8 +19,8 @@ export default function LandingPage() {
                 <div className="text-center max-w-xl">
                     <h2 className="text-2xl font-bold text-gray-700">How It Works</h2>
                     <p className="text-lg text-gray-600 mt-4">
-                        Choose up to 15 white numbers and up to 10 red numbers, and we'll generate every possible valid ticket combination.
-                        You'll be able to preview the total cost, number of tickets, and even print your tickets!
+                        Choose up to 15 white numbers and up to 10 red numbers, and we&apos;ll generate every possible valid ticket combination.
+                        You&apos;ll be able to preview the total cost, number of tickets, and even print your tickets!
                     </p>
                 </div>
 

@@ -1,6 +1,15 @@
-import { Button, NumberInput, Slider } from "@mantine/core";
+import { NumberInput, Slider } from "@mantine/core";
 
-export default function NumberSelector(props: any) {
+interface NumberSelectorProps {
+    state: any;
+    setState: any;
+    min: number;
+    max: number;
+    step: number;
+    color: string;
+}
+
+export default function NumberSelector(props: NumberSelectorProps) {
     const {
         state,
         setState,

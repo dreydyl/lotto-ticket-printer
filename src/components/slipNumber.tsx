@@ -1,3 +1,11 @@
+interface SlipNumberProps {
+    i: number;
+    num: number;
+    selectOption: () => void;
+    isSelected: boolean;
+    disabled?: boolean;
+}
+
 export default function SlipNumber(props: any) {
     const { i, num, selectOption, isSelected, disabled = false } = props;
 

@@ -1,6 +1,15 @@
 import SlipNumber from "./slipNumber";
 
-export default function SlipGrid(props: any) {
+interface SlipGridProps {
+    name: string;
+    max: number;
+    maxOptions?: string | number;
+    selection: any;
+    setSelection?: any;
+    disabled?: boolean;
+}
+
+export default function SlipGrid(props: SlipGridProps) {
     const { name, max, maxOptions, selection, setSelection, disabled = false } = props;
 
     const numRows = Math.ceil(max / 10);
@@ -17,13 +26,13 @@ export default function SlipGrid(props: any) {
      * @param newNumber 
      */
     const selectOption = (newNumber: number) => {
-        const newArray = [...selection].slice(0, maxOptions);
+        const newArray = [...selection].slice(0, maxOptions as number);
         console.log(newArray);
         const index = newArray.findIndex(n => n === null || n === undefined);
         if (newArray.includes(newNumber)) {
             // console.log('already in array');
             newArray[newArray.findIndex(n => n === newNumber)] = null;
-        } else if (newArray.filter((n: any) => n).length === maxOptions) {
+        } else if (newArray.filter((n: number) => n).length === maxOptions) {
             // console.log('array full');
             let minIndex = 0;
             for (let k in newArray) {

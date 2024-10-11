@@ -2,16 +2,13 @@
 
 import Chart from "@/components/chart";
 import { useEffect, useRef, useState } from "react";
-import Image from 'next/image';
-import { Button, NumberInput, Slider } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { combinations } from "@/functions/math";
 import { useRouter, useSearchParams } from 'next/navigation';
 
 
-import DownArrow from "../assets/DownArrow.svg";
+// import DownArrow from "../assets/DownArrow.svg";
 import NumberSelector from "@/components/numberSelector";
-import SlipNumber from "@/components/slipNumber";
-import SlipGrid from "@/components/slipGrid";
 import SelectionEditor from "@/components/selectionEditor";
 import useOnScreen from "@/hooks/useOnScreen";
 import { generateURL } from "@/functions/url";
@@ -37,9 +34,9 @@ export default function Home() {
   const redNumbers = searchParams.get('reds')?.split(',').map(n => parseInt(n));
 
   const sectionRef1 = useRef<HTMLDivElement>(null);
-  const isSectionOnScreen1 = useOnScreen(sectionRef1);
+  // const isSectionOnScreen1 = useOnScreen(sectionRef1);
 
-  const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(false);
+  // const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(false);
 
   const [numWhites, setNumWhites] = useState<string | number>(whiteNumbers ? whiteNumbers.length : 7);
   const [numReds, setNumReds] = useState<string | number>(redNumbers ? redNumbers.length : 2);
@@ -47,16 +44,16 @@ export default function Home() {
   const [whiteSelection, setWhiteSelection] = useState<(number | null)[]>(whiteNumbers ? whiteNumbers : []);
   const [redSelection, setRedSelection] = useState<(number | null)[]>(redNumbers ? redNumbers : []);
 
-  const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
+  // const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
 
   const [currentCombination, setCurrentCombination] = useState<number[]>([-1, -1, -1, -1, -1, -1]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsSectionHeaderOpen1(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsSectionHeaderOpen1(true);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   /**
    * Calculate number of tickets and number of slips
@@ -81,7 +78,7 @@ export default function Home() {
   const animateCombinations = async (): Promise<number[][]> => {
     const combinations: number[][] = [];
 
-    let incTime = Math.floor((1 / (tickets * tickets * tickets)) * 4000);
+    const incTime = Math.floor((1 / (tickets * tickets * tickets)) * 4000);
 
     for (let f = 0; f < (numReds as number); f++) {
       let a = 0;
