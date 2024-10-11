@@ -11,8 +11,8 @@ export default function LandingPage() {
             {/* Header Section */}
             <header className="text-center mb-12">
                 {/* <Image src={PowerballLogo} alt="Powerball Logo" width={150} height={150} /> */}
-                <h1 className="text-5xl font-bold text-gray-800 mt-4">Generate Your Powerball Tickets</h1>
-                <p className="text-lg text-gray-600 mt-2">Enter your numbers and create all possible Powerball ticket combinations!</p>
+                <h1 className="text-5xl font-bold text-gray-800 mt-4">Powerball Ticket Printer</h1>
+                <p className="text-lg text-gray-600 mt-2">Pick your favorite numbers and we will generate your tickets!</p>
             </header>
 
             {/* Main Section */}
@@ -28,9 +28,9 @@ export default function LandingPage() {
                 {/* CTA Button */}
                 <Link href={"pick"}>
                     <Button
-                        variant="outline"
+                        variant="filled"
                         size="lg"
-                        color="rgba(0, 0, 0, 1)"
+                        color="rgba(250, 77, 88, 1)"
                         className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
                     >
                         Start Now
