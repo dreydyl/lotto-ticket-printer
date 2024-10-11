@@ -1,8 +1,9 @@
 import { NumberInput, Slider } from "@mantine/core";
+import { Dispatch, SetStateAction } from "react";
 
 interface NumberSelectorProps {
-    state: any;
-    setState: any;
+    state: string | number;
+    setState: Dispatch<SetStateAction<string | number>>;
     min: number;
     max: number;
     step: number;

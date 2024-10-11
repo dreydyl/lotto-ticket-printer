@@ -1,11 +1,12 @@
 import { NumberInput } from "@mantine/core";
+import { Dispatch, SetStateAction } from "react";
 
 interface SelectionProps {
     name: string;
     max: number;
     maxOptions: string | number;
-    selection: any;
-    setSelection: any;
+    selection: (number | null)[];
+    setSelection: Dispatch<SetStateAction<(number | null)[]>>;
 }
 
 export default function SelectionEditor(props: SelectionProps) {
@@ -33,7 +34,7 @@ export default function SelectionEditor(props: SelectionProps) {
                     break;
                 }
             }
-        } else if ((newNumber === 1 && (newArray[index] === undefined || newArray[index] === '')) || newNumber < 1) {
+        } else if ((newNumber === 1 && (newArray[index] === undefined)) || newNumber < 1) {
             for (let n = 1; n < max; n++) {
                 if (!newArray.includes(n)) {
                     newArray[index] = n;

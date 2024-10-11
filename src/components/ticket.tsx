@@ -1,12 +1,13 @@
+import { Dispatch, SetStateAction } from "react";
 import SlipGrid from "./slipGrid";
 
 interface SelectionTicketProps {
     numWhites: string | number;
     whiteSelection: (number | null)[];
-    setWhiteSelection: any;
+    setWhiteSelection: Dispatch<SetStateAction<(number | null)[]>>;
     numReds: string | number;
     redSelection: (number | null)[];
-    setRedSelection: any;
+    setRedSelection: Dispatch<SetStateAction<(number | null)[]>>;
 }
 
 export function SelectionTicket(props: SelectionTicketProps) {
@@ -36,8 +37,8 @@ export function SelectionTicket(props: SelectionTicketProps) {
 }
 
 interface DisplayTicketProps {
-    whiteNumbers: string | number[];
-    redNumbers: string | number[];
+    whiteNumbers: number[];
+    redNumbers: number[];
 }
 
 export function DisplayTicket(props: DisplayTicketProps) {

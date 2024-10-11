@@ -1,7 +1,11 @@
 'use client'
 
 import Chart from "@/components/chart";
-import { useEffect, useRef, useState } from "react";
+import {
+  // useEffect,
+  useRef,
+  useState
+} from "react";
 import { Button } from "@mantine/core";
 import { combinations } from "@/functions/math";
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -10,7 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 // import DownArrow from "../assets/DownArrow.svg";
 import NumberSelector from "@/components/numberSelector";
 import SelectionEditor from "@/components/selectionEditor";
-import useOnScreen from "@/hooks/useOnScreen";
+// import useOnScreen from "@/hooks/useOnScreen";
 import { generateURL } from "@/functions/url";
 import { SelectionTicket } from "@/components/ticket";
 
