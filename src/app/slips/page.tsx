@@ -6,7 +6,7 @@ import { generateURL } from "@/functions/url";
 import { Alert, Button } from "@mantine/core";
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 // import { useReactToPrint } from "react-to-print";
 
 const dollar = new Intl.NumberFormat('en-US', {
@@ -23,7 +23,7 @@ const dollar = new Intl.NumberFormat('en-US', {
  * ?page=x
  * @returns 
  */
-export default function SlipPage() {
+function SlipPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const contentRef = useRef<HTMLDivElement>(null);
@@ -278,4 +278,12 @@ export default function SlipPage() {
             }
         </div>
     );
+}
+
+export default function SlipPageWrapper() {
+    return (
+        <Suspense>
+            <SlipPage />
+        </Suspense>
+    )
 }

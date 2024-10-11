@@ -4,7 +4,8 @@ import Chart from "@/components/chart";
 import {
   // useEffect,
   useRef,
-  useState
+  useState,
+  Suspense
 } from "react";
 import { Button } from "@mantine/core";
 import { combinations } from "@/functions/math";
@@ -30,7 +31,7 @@ async function increment(period: number) {
   await timer(period);
 }
 
-export default function Home() {
+function PickPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -210,7 +211,7 @@ export default function Home() {
             setWhiteSelection={setWhiteSelection}
             numReds={numReds}
             redSelection={redSelection}
-            setRedSelection={setRedSelection}/>
+            setRedSelection={setRedSelection} />
         </div>
 
         <div className="flex flex-col place-self-center gap-2">
@@ -258,4 +259,12 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export default function PickPageWrapper() {
+  return (
+    <Suspense>
+      <PickPage />
+    </Suspense>
+  )
 }
