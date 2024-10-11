@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from 'next/image';
 import { Button, NumberInput, Slider } from "@mantine/core";
 import { combinations } from "@/functions/math";
+import { useRouter, useSearchParams } from 'next/navigation';
 
 
 import DownArrow from "../assets/DownArrow.svg";
@@ -13,6 +14,8 @@ import SlipNumber from "@/components/slipNumber";
 import SlipGrid from "@/components/slipGrid";
 import SelectionEditor from "@/components/selectionEditor";
 import useOnScreen from "@/hooks/useOnScreen";
+import { generateURL } from "@/functions/url";
+import { SelectionTicket } from "@/components/ticket";
 
 const dollar = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -27,16 +30,22 @@ async function increment(period: number) {
 }
 
 export default function Home() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const whiteNumbers = searchParams.get('whites')?.split(',').map(n => parseInt(n));
+  const redNumbers = searchParams.get('reds')?.split(',').map(n => parseInt(n));
+
   const sectionRef1 = useRef<HTMLDivElement>(null);
   const isSectionOnScreen1 = useOnScreen(sectionRef1);
 
   const [isSectionHeaderOpen1, setIsSectionHeaderOpen1] = useState(false);
 
-  const [numWhites, setNumWhites] = useState<string | number>(7);
-  const [numReds, setNumReds] = useState<string | number>(2);
+  const [numWhites, setNumWhites] = useState<string | number>(whiteNumbers ? whiteNumbers.length : 7);
+  const [numReds, setNumReds] = useState<string | number>(redNumbers ? redNumbers.length : 2);
 
-  const [whiteSelection, setWhiteSelection] = useState<(number | null)[]>([]);
-  const [redSelection, setRedSelection] = useState<(number | null)[]>([]);
+  const [whiteSelection, setWhiteSelection] = useState<(number | null)[]>(whiteNumbers ? whiteNumbers : []);
+  const [redSelection, setRedSelection] = useState<(number | null)[]>(redNumbers ? redNumbers : []);
 
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
 
@@ -87,10 +96,8 @@ export default function Home() {
               let e = d + 1;
               while (e < (numWhites as number)) {
                 combinations.push([a, b, c, d, e, f]);
-                if(tickets < 1000) {
-                  setCurrentCombination([a, b, c, d, e, f]);
-                  await increment(incTime*(f+1)*(f+1));
-                }
+                setCurrentCombination([a, b, c, d, e, f]);
+                await increment(incTime * (f + 1) * (f + 1));
                 e++;
               }
               d++;
@@ -119,21 +126,27 @@ export default function Home() {
             {/* Options */}
             <div className="flex flex-col gap-6 place-self-stretch">
               {/* White Numbers */}
-              <NumberSelector
-                state={numWhites}
-                setState={setNumWhites}
-                min={5}
-                max={15}
-                step={1}
-                color="rgba(0, 0, 0, 1)" />
+              <div className="flex flex-col place-self-stretch gap-4">
+                <p className="text-black font-bold">Select number of white numbers:</p>
+                <NumberSelector
+                  state={numWhites}
+                  setState={setNumWhites}
+                  min={5}
+                  max={15}
+                  step={1}
+                  color="rgba(0, 0, 0, 1)" />
+              </div>
               {/* Red Numbers */}
-              <NumberSelector
-                state={numReds}
-                setState={setNumReds}
-                min={1}
-                max={10}
-                step={1}
-                color="rgba(250, 77, 88, 1)" />
+              <div className="flex flex-col place-self-stretch gap-4">
+                <p className="text-primary font-bold">Select number of red numbers:</p>
+                <NumberSelector
+                  state={numReds}
+                  setState={setNumReds}
+                  min={1}
+                  max={10}
+                  step={1}
+                  color="rgba(250, 77, 88, 1)" />
+              </div>
               {/* Advanced Options */}
               {/* <Button
                 variant="outline"
@@ -190,26 +203,13 @@ export default function Home() {
           </div>
 
           {/* Ticket */}
-          <div className="flex px-4">
-            <div className="flex flex-col w-[356px] h-[734px] p-[4px] bg-primary">
-              <div className="flex flex-col h-[490px] place-items-end">
-                <div className="flex flex-row h-[50px]">
-                  <div className="flex bg-white rounded-tl-[24px] w-[194px] h-full place-items-center">
-                    <p className="text-primary font-bold text-center w-full">SELECT *{numWhites}*</p>
-                  </div>
-                </div>
-                <SlipGrid name='white' max={69} maxOptions={numWhites} selection={whiteSelection} setSelection={setWhiteSelection} />
-              </div>
-              <div className="flex flex-col flex-1 place-items-end bg-pink">
-                <div className="flex flex-row h-[50px]">
-                  <div className="flex rounded-tl-[24px] w-[194px] h-full place-items-center">
-                    <p className="text-primary font-bold text-center w-full">SELECT *{numReds}*</p>
-                  </div>
-                </div>
-                <SlipGrid name='red' max={26} maxOptions={numReds} selection={redSelection} setSelection={setRedSelection} />
-              </div>
-            </div>
-          </div>
+          <SelectionTicket
+            numWhites={numWhites}
+            whiteSelection={whiteSelection}
+            setWhiteSelection={setWhiteSelection}
+            numReds={numReds}
+            redSelection={redSelection}
+            setRedSelection={setRedSelection}/>
         </div>
 
         <div className="flex flex-col place-self-center gap-2">
@@ -217,8 +217,8 @@ export default function Home() {
           <div className="flex flex-row gap-[4px] flex-wrap place-self-center place-items-center">
             <p>White Numbers:</p>
             {trueWhiteSelection.sort((a, b) => a! - b!).map((num, i) => {
-              const highlight = currentCombination.slice(0,5).includes(i);
-              return <div className={"rounded-full w-[40px] h-[40px] bg-white place-content-center "+(highlight ? "border-ticket border-4" : "border-black border-[1px]")} key={'white-num-' + num}>
+              const highlight = currentCombination.slice(0, 5).includes(i);
+              return <div className={"rounded-full w-[40px] h-[40px] bg-white place-content-center " + (highlight ? "border-ticket border-4" : "border-black border-[1px]")} key={'white-num-' + num}>
                 <p className="text-center">{num}</p>
               </div>
             })}
@@ -228,7 +228,7 @@ export default function Home() {
             <p>Red numbers:</p>
             {trueRedSelection.sort((a, b) => a! - b!).map((num, i) => {
               const highlight = currentCombination[5] === i;
-              return <div className={"rounded-full w-[40px] h-[40px] bg-primary place-content-center "+(highlight ? "border-ticket border-4" : "border-primary border-[1px]")} key={'red-num-' + num}>
+              return <div className={"rounded-full w-[40px] h-[40px] bg-primary place-content-center " + (highlight ? "border-ticket border-4" : "border-primary border-[1px]")} key={'red-num-' + num}>
                 <p className="text-center text-white">{num}</p>
               </div>
             })}
@@ -241,7 +241,15 @@ export default function Home() {
               color="rgba(54, 54, 54, 1)"
               size="lg"
               disabled={!readyToGenerate}
-              onClick={() => { animateCombinations() }}>Generate Ticket Slips</Button>
+              onClick={() => {
+                if (tickets <= 500) {
+                  animateCombinations().then(() => {
+                    router.push('/slips' + generateURL(trueWhiteSelection, trueRedSelection));
+                  })
+                } else {
+                  router.push('/slips' + generateURL(trueWhiteSelection, trueRedSelection));
+                }
+              }}>Generate Ticket Slips</Button>
             {!readyToGenerate && <p className="text-primary">Select more numbers or reduce your selection size!</p>}
           </div>
         </div>

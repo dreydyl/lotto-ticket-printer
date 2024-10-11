@@ -27,14 +27,14 @@ export default function LandingPage() {
 
                 {/* CTA Button */}
                 <Link href={"pick"}>
-                <Button
-                    variant="outline"
-                    size="lg"
-                    color="rgba(0, 0, 0, 1)"
-                    className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
-                >
-                    Start Now
-                </Button>
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        color="rgba(0, 0, 0, 1)"
+                        className="bg-gray-800 text-white px-8 py-4 text-lg hover:bg-gray-700 transition-colors"
+                    >
+                        Start Now
+                    </Button>
                 </Link>
             </main>
 

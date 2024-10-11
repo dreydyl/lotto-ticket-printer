@@ -1,7 +1,7 @@
 import SlipNumber from "./slipNumber";
 
 export default function SlipGrid(props: any) {
-    const { name, max, maxOptions, selection, setSelection } = props;
+    const { name, max, maxOptions, selection, setSelection, disabled = false } = props;
 
     const numRows = Math.ceil(max / 10);
 
@@ -47,7 +47,7 @@ export default function SlipGrid(props: any) {
         <div className={"grid grid-rows-" + numRows + " grid-cols-10 flex-1 place-self-stretch place-items-center " + classes}>
             {Array.from({ length: max }, (_, i) => {
                 const num = i + 1;
-                return <SlipNumber key={name + '-num-' + i} i={i} num={num} selectOption={selectOption} isSelected={selection.slice(0, maxOptions).includes(num)} />
+                return <SlipNumber key={name + '-num-' + i} i={i} num={num} selectOption={selectOption} isSelected={selection.slice(0, maxOptions).includes(num)} disabled={disabled} />
             })}
         </div>
     )
