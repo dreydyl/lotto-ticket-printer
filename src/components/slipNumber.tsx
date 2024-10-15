@@ -10,11 +10,11 @@ export default function SlipNumber(props: SlipNumberProps) {
     const { i, num, selectOption, isSelected, disabled = false } = props;
 
     const classes = isSelected ?
-        'bg-black border-black ' + (disabled ? '' : 'hover:border-blue hover:bg-transparent') :
-        'border-primary ' + (disabled ? '' : 'hover:border-blue hover:bg-blue');
+        'bg-black border-black ' + (disabled ? '' : 'hover:border-blue hover:bg-blue') :
+        'border-primary ' + (disabled ? '' : 'hover:border-blue hover:bg-transparent');
     const textClasses = isSelected ?
-        'text-white ' + (disabled ? '' : 'group-hover:text-blue') :
-        'text-primary ' + (disabled ? '' : 'group-hover:text-white');
+        'text-white ' + (disabled ? '' : 'group-hover:text-white') :
+        'text-primary ' + (disabled ? '' : 'group-hover:text-blue');
 
     return (
         <div className="flex place-items-center">
